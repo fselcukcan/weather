@@ -1,0 +1,6 @@
+const config = {
+    OPENCAGEDATA_API_KEY: "7a467f058a5a4027a6dda76056341592",
+    WEATHERBIT_API_KEY: "65a5936960f148fe8f2683ba60829f71"
+}
+
+export default config;
