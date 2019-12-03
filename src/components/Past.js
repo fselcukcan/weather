@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { formatDate } from "../utils/formatdate.js";
+import { formatDate, addDays } from "../utils/libdate.js";
 import config from "../config";
 
 export const Past = function({ coords }) {
@@ -9,8 +9,7 @@ export const Past = function({ coords }) {
     const [dayAfter, setDayAfter] = useState("");
   
     useEffect(() => {
-      const dateObj = new Date(date);
-      const dayAfter = dateObj.setDate(dateObj.getDate() + 1)
+      const dayAfter = addDays(date, 1);
       setDayAfter(formatDate(dayAfter));
     }, [date]);
     
@@ -34,7 +33,6 @@ export const Past = function({ coords }) {
         </form>
   
         <div>
-        <div>lat: {coords.lat} lon: {coords.lng}</div>
         {weather
           &&
           <>

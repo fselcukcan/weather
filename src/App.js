@@ -17,32 +17,35 @@ function App() {
     getCountries();
   }, []);
 
-  const [selectedCountry, setSelectedCountry] = useState("");
+  const [selectedCountryName, setSelectedCountryName] = useState("");
 
-  const [selectedCapital, setSelectedCapital] = useState();
+  const [selectedCapitalName, setSelectedCapitalName] = useState();
 
   useEffect(() => {
-    const capital = countries.find(country => country.name === selectedCountry);
-    setSelectedCapital(capital);
-  }, [selectedCountry, countries]);
+    if (selectedCountryName) {
+      const selectedCountry = countries.find(country => country.name === selectedCountryName);
+      setSelectedCapitalName(selectedCountry.capital);
+    }
+  }, [selectedCountryName, countries]);
 
   const [capitalCoords, setCapitalCoords] = useState();
 
   useEffect(() => {
-    async function getCapital(selectedCapital, selectedCountry, key = config.OPENCAGEDATA_API_KEY) {
+    async function getCapital(selectedCapitalName, selectedCountryName, key = config.OPENCAGEDATA_API_KEY) {
       try {
-        const response = await fetch(`https://api.opencagedata.com/geocode/v1/json?q=${selectedCapital},${selectedCountry}&key=${key}`);
-        const capital = await response.json();
-        const capitalCoords = capital => capital.results[0].geometry;
-        setCapitalCoords(capitalCoords(capital));
+        const response = await fetch(`https://api.opencagedata.com/geocode/v1/json?q=${selectedCapitalName},${selectedCountryName}&key=${key}`);
+        const capitals = await response.json();
+        const capitalCoords = capitals => capitals.results[0].geometry;
+        setCapitalCoords(capitalCoords(capitals));
+        console.log("capitalCoords(capitals): ", capitalCoords(capitals))
       } catch (error) {
-        console.error("getCapitalCoords: ", error);
+        console.error(error);
       }
     }
-    if (selectedCapital && selectedCountry) {
-      getCapital(selectedCapital, selectedCountry);
+    if (selectedCapitalName && selectedCountryName) {
+      getCapital(selectedCapitalName, selectedCountryName);
     }
-  }, [selectedCapital, selectedCountry]);
+  }, [selectedCapitalName, selectedCountryName]);
 
   return (
     <div className="App">
@@ -51,15 +54,11 @@ function App() {
         <p>
           Select a country to get the weather data on coordinates of its capital city of today, this week, or a past date.
         </p>
-        {/*<a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>*/}
-        <select value={selectedCountry} onChange={e => setSelectedCountry(e.target.value)}>
+
+        <select
+          value={selectedCountryName}
+          onChange={e => setSelectedCountryName(e.target.value)}
+          className="country-select">
           <option value="" disabled>{"Select a country"}</option>
           {
             countries.map((country, i) => 
@@ -73,6 +72,8 @@ function App() {
             )
           }
         </select>
+        
+        <div>{selectedCapitalName}</div>
 
         {capitalCoords &&
         <Tabs>

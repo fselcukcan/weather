@@ -22,7 +22,6 @@ export const Today = ({ coords }) => {
       
     return (
       <div>
-        <div>lat: {coords.lat} lon: {coords.lng}</div>
         {weather
           &&
           <>
