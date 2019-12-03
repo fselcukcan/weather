@@ -52,7 +52,7 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Select a country to get the weather data on coordinates of its capital city of today, this week, or a past date.
+          Select a country to get the weather data of today, this week, or a past date on coordinates of its capital city.
         </p>
 
         <select
