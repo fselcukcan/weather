@@ -17,7 +17,13 @@ export const Past = function({ coords }) {
       try {
         e.preventDefault();
         const {lat, lng} = coords;
+
         const response = await fetch(`https://api.weatherbit.io/v2.0/history/daily?lat=${lat}&lon=${lng}&start_date=${date}&end_date=${dayAfter}&key=${config.WEATHERBIT_API_KEY}`);
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok.');
+        }
+
         const weather = await response.json();
         setWeather(weather.data[0]);
       } catch(error) {
@@ -37,10 +43,13 @@ export const Past = function({ coords }) {
           &&
           <>
             <div>{weather.temp} Celcius</div>
-            <div>clouds: {weather.clouds}%</div>
-            <div>{weather.snow === 0 ? "no snow" : "snowing"}</div>
-            <div>precipitation: {weather.precip}</div>
-            <div>pressure: {weather.pres}</div>
+            <div>max/min: {weather.max_temp}/{weather.min_temp} Celcius</div>
+            <div title="[Satellite based] average cloud coverage">clouds: {weather.clouds}%</div>
+            <div title="Accumulated snowfall">snowfall: {weather.snow} mm</div>
+            <div>snow depth: {weather.snow_depth} mm</div>
+            <div title="Accumulated liquid equivalent precipitation">precipitation: {weather.precip} mm</div>
+            <div>wind speed: {weather.wind_spd} m/s</div>
+            <div>pressure: {weather.pres} mb (milibar)</div>
           </>
         }
       </div>

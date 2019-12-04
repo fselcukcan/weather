@@ -3,16 +3,24 @@ import logo from './logo.svg';
 import './App.css';
 import { Tabs } from "@bumaga/tabs";
 import config from "./config";
-import {Tab, Panel, Today, ThisWeek, Past} from "./components";
+import {Tab, Panel, Today, Future, Past} from "./components";
 
 function App() {
   const [countries, setCountries] = useState([]);
 
   useEffect(() => {
     async function getCountries () {
-      const response = await fetch("https://restcountries.eu/rest/v2/all");
-      const countries = await response.json();
-      setCountries(countries);
+      try {
+        const response = await fetch("https://restcountries.eu/rest/v2/all");
+        if (!response.ok) {
+          throw new Error('Network response was not ok.');
+        }
+        const countries = await response.json();
+        setCountries(countries);
+      } catch (error) {
+        console.error(error);
+      }
+      
     }
     getCountries();
   }, []);
@@ -34,10 +42,14 @@ function App() {
     async function getCapital(selectedCapitalName, selectedCountryName, key = config.OPENCAGEDATA_API_KEY) {
       try {
         const response = await fetch(`https://api.opencagedata.com/geocode/v1/json?q=${selectedCapitalName},${selectedCountryName}&key=${key}`);
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok.');
+        }
+
         const capitals = await response.json();
         const capitalCoords = capitals => capitals.results[0].geometry;
         setCapitalCoords(capitalCoords(capitals));
-        console.log("capitalCoords(capitals): ", capitalCoords(capitals))
       } catch (error) {
         console.error(error);
       }
@@ -84,7 +96,7 @@ function App() {
           </div>
 
           <Panel><Today coords={capitalCoords}></Today></Panel>
-          <Panel><ThisWeek coords={capitalCoords}></ThisWeek></Panel>
+          <Panel><Future coords={capitalCoords} days={7}></Future></Panel>
           <Panel><Past coords={capitalCoords}></Past></Panel>
         </Tabs>
         }
