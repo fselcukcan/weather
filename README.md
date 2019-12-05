@@ -1,7 +1,7 @@
 Todo
--[] Sharing
--[] Any settlement be selectable
--[] Search: Your cities and more
+-[ ] Sharing
+-[ ] Any settlement be selectable
+-[ ] Search: Your cities and more
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
