@@ -1,4 +1,4 @@
-### Todo
+Todo
 - [ ] Sharing
 - [ ] Any settlement be selectable
 - [ ] Search: Your cities and more
