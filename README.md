@@ -2,6 +2,8 @@ Todo
 - [ ] Sharing
 - [ ] Any settlement be selectable
 - [ ] Search: Your cities and more
+- [ ] non pwa builds
+- [ ] abort controlling for `fetch`
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
